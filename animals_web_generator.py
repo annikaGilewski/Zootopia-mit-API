@@ -1,6 +1,10 @@
 import requests
 
-name = "Fox"
+def generate_pet_request():
+    answer_to_pet_name = input("Enter a name of an animal: ")
+    return answer_to_pet_name
+
+name = generate_pet_request()
 
 api_url = "https://api.api-ninjas.com/v1/animals?name={}".format(name)
 
@@ -64,4 +68,4 @@ html = html_template.replace(
 with open("animals.html", "w", encoding="utf-8") as handle:
     handle.write(html)
 
-
+print("Website was successfully generated to the file animals.html.")
