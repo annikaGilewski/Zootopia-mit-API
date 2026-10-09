@@ -1,26 +1,14 @@
-import requests
+import data_fetcher
 
-def generate_pet_request():
-    answer_to_pet_name = input("Enter a name of an animal: ")
-    return answer_to_pet_name
+name = input("Enter a name of an animal: ")
 
-name = generate_pet_request()
+animals_data = data_fetcher.fetch_data(name)
 
-api_url = "https://api.api-ninjas.com/v1/animals?name={}".format(name)
-
-response = requests.get(
-    api_url,
-    headers={"X-Api-Key": "LLxIqPK6TGGpQteEORCUHVGiCghXXliOlcQNX6Mm"}
-)
-
-animals_data = []
-
-if response.status_code == requests.codes.ok:
-    animals_data = response.json()
-    request_successful = True
-else:
+if animals_data is None:
     request_successful = False
-    print("Fehler beim Abrufen der Tierdaten.")
+    animals_data = []
+else:
+    request_successful = True
 
 def load_html(html_file):
     with open(html_file, "r", encoding="utf-8") as handle:
