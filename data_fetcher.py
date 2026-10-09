@@ -1,5 +1,9 @@
 import requests
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+API_KEY = os.getenv("API_KEY")
 
 def fetch_data(animal_name):
     """
@@ -11,7 +15,7 @@ def fetch_data(animal_name):
     response = requests.get(
         api_url,
         params={"name": animal_name},
-        headers={"X-Api-Key": "DEIN_API_KEY"}
+        headers={"X-Api-Key": "API_KEY"}
     )
 
     if response.status_code == requests.codes.ok:
