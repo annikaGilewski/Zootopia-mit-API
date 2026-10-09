@@ -13,11 +13,14 @@ response = requests.get(
     headers={"X-Api-Key": "LLxIqPK6TGGpQteEORCUHVGiCghXXliOlcQNX6Mm"}
 )
 
+animals_data = []
+
 if response.status_code == requests.codes.ok:
     animals_data = response.json()
+    request_successful = True
 else:
-    print("Error:", response.status_code, response.text)
-
+    request_successful = False
+    print("Fehler beim Abrufen der Tierdaten.")
 
 def load_html(html_file):
     with open(html_file, "r", encoding="utf-8") as handle:
@@ -25,6 +28,7 @@ def load_html(html_file):
 
 
 html_template = load_html("animals_template.html")
+
 
 def serialize_animal(animal_obj):
     output = ""
@@ -53,10 +57,18 @@ def serialize_animal(animal_obj):
     return output
 
 
-animals_info = ""
+# Prüfen, ob das Tier gefunden wurde
+if not request_successful:
+    animals_info = "<h2>Die Tierdaten konnten nicht geladen werden.</h2>"
 
-for animal in animals_data:
-    animals_info += serialize_animal(animal)
+elif not animals_data:
+    animals_info = f'<h2>Das Tier „{name}“ existiert nicht.</h2>'
+
+else:
+    animals_info = ""
+
+    for animal in animals_data:
+        animals_info += serialize_animal(animal)
 
 
 html = html_template.replace(
